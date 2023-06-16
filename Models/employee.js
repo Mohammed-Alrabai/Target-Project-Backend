@@ -14,12 +14,20 @@ const employeeSchema = new mongoose.Schema(
     email: String,
 
     // Relationship Here
+     comments:[{
+      type: mongoose.Schema.Types.ObjectId,
+       ref:"Goal"
+    }],
+    Department:{
+       type: mongoose.Schema.Types.ObjectId,
+       ref:"Department"
+    }
   },
   {
     timestamps: true,
   }
 );
 
-const employee = mongoose.model("Employee",employeeSchema)
+const employee = mongoose.model("Comment",employeeSchema)
 
 module.exports = employee;

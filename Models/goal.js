@@ -19,8 +19,16 @@ const goalSchema = new mongoose.Schema({
     },
     type: {
         type: String,
-    }
+    },
     // Relationship Here
+    AdminAuthor:{
+    type: mongoose.Schema.Types.ObjectId,
+       ref:"Admin"
+    },
+    SubAdminAuther:{
+        type: mongoose.Schema.Types.ObjectId,
+       ref:"subAdmin"
+    }
 },
 {
     timestamps: true,

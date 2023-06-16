@@ -16,6 +16,19 @@ const subAdminSchema = new mongoose.Schema(
       unique: true,
     },
     // Relationship Here
+     Department:{
+       type: mongoose.Schema.Types.ObjectId,
+       ref:"Department"
+    },
+     challenges:[{
+       type: mongoose.Schema.Types.ObjectId,
+       ref:"Challenge"
+    }],
+    Goals:[{
+      type: mongoose.Schema.Types.ObjectId,
+       ref:"Goal"
+    }],
+    
   },
   {
     timestamps: true,
