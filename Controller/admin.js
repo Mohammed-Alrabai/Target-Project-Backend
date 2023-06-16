@@ -45,7 +45,6 @@ exports.createAdmin = async (req, res) => {
     }
   }
 };
-//
 // login admin
 exports.loginAdmin = async (req, res, next) => {
   try {
