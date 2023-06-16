@@ -15,7 +15,9 @@ const {
   getAllChallenges,
   getChallengeById,
   updateChallenge,
-  deleteChallenge
+  deleteChallenge,
+  // import subAdmin function
+  createSubAdmin,
 } = require("../Controller/admin");
 const { signToken, verifyToken } = require("../Middleware/authentication");
 
@@ -37,5 +39,9 @@ router.get("/challenge", verifyToken , getAllChallenges);
 router.get("/challenge/:id", verifyToken , getChallengeById);
 router.patch("/updateChallenge/:id", verifyToken , updateChallenge);
 router.delete("/deleteChallenge/:id", verifyToken, deleteChallenge);
+
+// subAdmin route
+router.post("/createSubAdmin", verifyToken, createSubAdmin);
+
 
 module.exports = router;
