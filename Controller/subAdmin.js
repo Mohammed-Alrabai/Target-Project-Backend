@@ -15,6 +15,3 @@ const Challenge = require("../Models/challeng.js");
 const Goal = require("../Models/goal.js");
 
 //
-exports.createSubAdmin = async (req, res) => {
-    
-}

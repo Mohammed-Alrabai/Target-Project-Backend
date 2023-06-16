@@ -14,6 +14,9 @@ const Challenge = require("../Models/challeng.js");
 // import the goal model
 const Goal = require("../Models/goal.js");
 
+// import the subAdmin model
+const SubAdmin = require("../Models/subAdmin.js");
+
 // create admin
 exports.createAdmin = async (req, res) => {
   try {
@@ -302,3 +305,41 @@ exports.deleteChallenge = async (req, res) => {
   }
 };
 // end challenge function
+// subAdmin function
+const Department = require("../Models/department.js");
+
+// create subAdmin
+exports.createSubAdmin = async (req, res) => {
+  try {
+    // create subAdmin
+    const subAdminData = await SubAdmin.create({
+      name: req.body.name,
+      username: req.body.username,
+      email: req.body.email,
+      password: req.body.password,
+      Department: req.body.department,
+    });
+    // add subAdmin to department
+    const department = await Department.findById(req.body.department).populate(
+      "subAdmin"
+    );
+    department.subAdmin = subAdminData._id;
+    await department.save();
+    // send response json
+    res.status(200).json({
+      result: subAdminData,
+    });
+    // handle error
+  } catch (error) {
+    // handle error
+    if (error.code === 11000) {
+      return res.status(400).json({
+        message: "Username already exists",
+      });
+    } else {
+      return res.status(500).json({
+        message: error,
+      });
+    }
+  }
+};
