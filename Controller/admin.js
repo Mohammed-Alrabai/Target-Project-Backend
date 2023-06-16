@@ -3,8 +3,9 @@ const express = require("express");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 const bcrypt = require("bcrypt");
-const saltRounds = 10;
 dotenv.config();
+
+const saltRounds = Number(process.env.saltRounds);
 // import the admin model
 const admin = require("../Models/admin.js");
 // import the challenge model
@@ -30,7 +31,6 @@ exports.createAdmin = async (req, res) => {
     });
     // handle error
   } catch (error) {
-    console.log(error);
     if (error.code === 11000) {
       res.status(400).json({
         message: "Username already exists",
@@ -42,7 +42,7 @@ exports.createAdmin = async (req, res) => {
     }
   }
 };
-
+//
 // login admin
 exports.loginAdmin = async (req, res, next) => {
   try {
