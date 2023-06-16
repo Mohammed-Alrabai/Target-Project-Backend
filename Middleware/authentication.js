@@ -5,19 +5,17 @@ dotenv.config();
 
 exports.signToken = async (req, res, next) => {
   // get data from admin Controller
-  const admin = res.locals.adminData;
+  const data = res.locals;
   // create token
-  const token = jwt.sign({ admin }, process.env.JWT_SECRET);
+  const token = jwt.sign({ data }, process.env.JWT_SECRET);
   // send token
-  res.status(200).json({
-    admin,
-    token,
-  });
+    res.status(200).json({ data , token });
+    res.status(401).json({ message: "Unauthorized" });
 };
 
 exports.verifyToken = (req, res, next) => {
   // get token from header
-    const token = req.headers.authorization.split(" ")[1];
+  const token = req.headers.authorization.split(" ")[1];
   // check token
   if (!token) {
     return res.status(403).send("A token is required for authentication");
@@ -31,13 +29,13 @@ exports.verifyToken = (req, res, next) => {
     res.locals.adminData = decoded.admin;
     next();
   });
-}
+};
 
 exports.checkLogin = (req, res, next) => {
-      if (!req.headers.authorization) {
-        return res.status(401).json({
-          message: "Please login"
-        });
-      }
-      next();
-    };
+  if (!req.headers.authorization) {
+    return res.status(401).json({
+      message: "Please login",
+    });
+  }
+  next();
+};
