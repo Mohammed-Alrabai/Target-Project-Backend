@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const database = require("./Config/Database");
+const jwt = require("jsonwebtoken");
 const cors = require("cors");
 
 const app = express();
