@@ -14,6 +14,14 @@ const adminSchema = new mongoose.Schema(
     email: String,
 
     // Relationship Here
+    challenges:[{
+       type: mongoose.Schema.Types.ObjectId,
+       ref:"Challenge"
+    }],
+    Goals:[{
+      type: mongoose.Schema.Types.ObjectId,
+       ref:"Goal"
+    }]
   },
   {
     timestamps: true,
