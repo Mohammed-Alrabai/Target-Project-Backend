@@ -209,6 +209,7 @@ exports.createChallenge = async (req, res) => {
       title: req.body.title,
       body: req.body.body,
       AdminAuthor: adminId,
+      type: req.body.type,
     });
     // add challenge to admin
     const admin = await Admin.findById(adminId).populate("challenges");
