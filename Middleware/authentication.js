@@ -13,21 +13,18 @@ exports.signToken = async (req, res, next) => {
   res.status(401).json({ message: "Unauthorized" });
 };
 
-exports.verifyToken = (req, res, next) => {
+exports.verifyToken = async (req, res, next) => {
   if (!req.headers.authorization) {
     return res.status(403).json({ message: "Please login" });
   }
-  // get token from header
-  const token = req.headers.authorization.split(" ")[1];
-  // verify token
-  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-    if (err) {
-      return res.status(401).send("Please login");
-    }
-    // send data to controller
-    res.locals.adminData = decoded.admin;
+  try {
+    const token = req.headers.authorization.split(" ")[1];
+    const decoded = await jwt.verify(token, process.env.JWT_SECRET);
+    res.locals.decoded = decoded;
     next();
-  });
+  } catch (err) {
+    res.status(401).json({ massage: "Please Login" });
+  }
 };
 
 exports.checkLogin = (req, res, next) => {
