@@ -27,6 +27,6 @@ const departmentSchema = new mongoose.Schema({
     timestamps: true,
 })
 
-const Challenge = mongoose.model("Department", challengeSchema);
+const Challenge = mongoose.model("Department", departmentSchema);
 
 module.exports = Department;

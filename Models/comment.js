@@ -23,6 +23,6 @@ const commentSchema = new mongoose.Schema({
     timestamps: true,
 })
 
-const Challenge = mongoose.model("Comment", challengeSchema);
+const Comment = mongoose.model("Comment", commentSchema);
 
 module.exports = Comment;
