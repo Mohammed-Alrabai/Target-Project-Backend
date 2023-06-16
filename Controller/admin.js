@@ -4,11 +4,10 @@ const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 const bcrypt = require("bcrypt");
 
-const  saltRounds = Number(process.env.salt);
+const saltRounds = Number(process.env.salt);
 
 dotenv.config();
 
-const saltRounds = Number(process.env.saltRounds);
 // import the admin model
 const admin = require("../Models/admin.js");
 // import the challenge model
