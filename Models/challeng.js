@@ -20,10 +20,6 @@ const challengeSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
-    type: {
-        type: String,
-        required: true,
-    },
     // Relationship Here
 },
 {

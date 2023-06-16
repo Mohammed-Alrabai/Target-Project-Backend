@@ -9,21 +9,20 @@ exports.signToken = async (req, res, next) => {
   // create token
   const token = jwt.sign({ data }, process.env.JWT_SECRET);
   // send token
-    res.status(200).json({ data , token });
-    res.status(401).json({ message: "Unauthorized" });
+  res.status(200).json({ data, token });
+  res.status(401).json({ message: "Unauthorized" });
 };
 
 exports.verifyToken = (req, res, next) => {
+  if (!req.headers.authorization) {
+    return res.status(403).json({ message: "Please login" });
+  }
   // get token from header
   const token = req.headers.authorization.split(" ")[1];
-  // check token
-  if (!token) {
-    return res.status(403).send("A token is required for authentication");
-  }
   // verify token
   jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
     if (err) {
-      return res.status(401).send("Invalid Token");
+      return res.status(401).send("Please login");
     }
     // send data to controller
     res.locals.adminData = decoded.admin;
