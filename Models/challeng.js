@@ -1,38 +1,45 @@
 const mongoose = require("mongoose");
 
-const challengeSchema = new mongoose.Schema({
+const challengeSchema = new mongoose.Schema(
+  {
     title: {
-        type: String,
-        required: true,
+      type: String,
+      required: true,
     },
     body: {
-        type: String,
-        required: true,
+      type: String,
+      required: true,
     },
     proved: {
-        type: Boolean,
+      type: Boolean,
     },
     date: {
-        type: Date,
-        default: Date.now,
+      type: Date,
+      default: Date.now,
     },
     terminated: {
-        type: Boolean,
-        default: false,
+      type: Boolean,
+      default: false,
+    },
+    type: {
+      type: String,
+      enum: ["public", "private", "manager"],
+      default: "public",
     },
     // Relationship Here
-     AdminAuthor:{
-    type: mongoose.Schema.Types.ObjectId,
-       ref:"Admin"
+    AdminAuthor: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Admin",
     },
-    SubAdminAuther:{
-        type: mongoose.Schema.Types.ObjectId,
-       ref:"subAdmin"
-    }
-},
-{
+    SubAdminAuther: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "subAdmin",
+    },
+  },
+  {
     timestamps: true,
-})
+  }
+);
 
 const Challenge = mongoose.model("Challenge", challengeSchema);
 
