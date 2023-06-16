@@ -13,7 +13,7 @@ const commentSchema = new mongoose.Schema({
     agreeCounter: {
         type: Number,
     },
-    // Relationship Here
+    // Relationship Here 
     EmployeeAuther:{
        type: mongoose.Schema.Types.ObjectId,
        ref:"Employee"
