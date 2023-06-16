@@ -19,6 +19,8 @@ const goalSchema = new mongoose.Schema({
     },
     type: {
         type: String,
+        enum: ["public", "private"],
+        default: "public",
     },
     // Relationship Here
     AdminAuthor:{

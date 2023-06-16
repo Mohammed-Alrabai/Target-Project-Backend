@@ -91,13 +91,14 @@ exports.getAdmin = async (req, res) => {
 // goals function
 // create goal
 exports.createGoal = async (req, res) => {
-      const decoded = res.locals.decoded;
-      const adminId = decoded.data.admin._id;
+  const decoded = res.locals.decoded;
+  const adminId = decoded.data.admin._id;
   try {
     // create goal
     const goalData = await Goal.create({
       title: req.body.title,
       body: req.body.body,
+      type: req.body.type,
       AdminAuthor: adminId,
     });
     // add goal to admin
