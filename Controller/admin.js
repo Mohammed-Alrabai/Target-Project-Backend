@@ -8,11 +8,11 @@ const saltRounds = Number(process.env.salt);
 dotenv.config();
 
 // import the admin model
-const admin = require("../Models/admin.js");
+const Admin = require("../Models/admin.js");
 // import the challenge model
-const challenge = require("../Models/challeng.js");
+const Challenge = require("../Models/challeng.js");
 // import the goal model
-const goal = require("../Models/goal.js");
+const Goal = require("../Models/goal.js");
 
 // create admin
 exports.createAdmin = async (req, res) => {
@@ -22,7 +22,7 @@ exports.createAdmin = async (req, res) => {
     const passHash = await bcrypt.hash(password, saltRounds);
 
     // create admin
-    const adminData = await admin.create({
+    const adminData = await Admin.create({
       name: "admin",
       username: "admin",
       password: passHash,
@@ -52,12 +52,12 @@ exports.loginAdmin = async (req, res, next) => {
     // get username and password from request
     const { username, password } = req.body;
     // find admin by username
-    const adminData = await admin.findOne({ username }).select("+password");
+    const adminData = await Admin.findOne({ username }).select("+password");
     // compare password
     const pass = await bcrypt.compare(password, adminData.password);
     // check if password is correct and admin exists , send data to middleware
     if (adminData && pass === true) {
-      res.locals.adminData = adminData;
+      res.locals.admin = adminData;
       next();
       // handle error for username and password
     } else {
@@ -76,7 +76,7 @@ exports.loginAdmin = async (req, res, next) => {
 exports.getAdmin = async (req, res) => {
   try {
     // get all admin
-    const adminData = await admin.find();
+    const adminData = await Admin.find();
     // send response json
     res.status(200).json({
       result: adminData,
@@ -92,11 +92,19 @@ exports.getAdmin = async (req, res) => {
 // goals function
 // create goal
 exports.createGoal = async (req, res) => {
+      const decoded = res.locals.decoded;
+      const adminId = decoded.data.admin._id;
   try {
-    // get data from request
-    const data = req.body;
     // create goal
-    const goalData = await goal.create(data);
+    const goalData = await Goal.create({
+      title: req.body.title,
+      body: req.body.body,
+      AdminAuthor: adminId,
+    });
+    // add goal to admin
+    const admin = await Admin.findById(adminId).populate("Goals");
+    admin.Goals.push(goalData._id);
+    await admin.save();
     // send response json
     res.status(200).json({
       result: goalData,
@@ -112,7 +120,7 @@ exports.createGoal = async (req, res) => {
 exports.getAllGoals = async (req, res) => {
   try {
     // get all goals
-    const goalData = await goal.find();
+    const goalData = await Goal.find();
     // send response json
     res.status(200).json({
       result: goalData,
@@ -128,7 +136,7 @@ exports.getAllGoals = async (req, res) => {
 exports.getGoalById = async (req, res) => {
   try {
     // get goal by id
-    const goalData = await goal.findById(req.params.id);
+    const goalData = await Goal.findById(req.params.id);
     // send response json
     res.status(200).json({
       result: goalData,
@@ -144,7 +152,7 @@ exports.getGoalById = async (req, res) => {
 exports.updateGoal = async (req, res) => {
   try {
     // get goal by id
-    const goalData = await goal.findByIdAndUpdate(req.params.id, req.body);
+    const goalData = await Goal.findByIdAndUpdate(req.params.id, req.body);
     // handle error
     if (!goalData) {
       return res.status(404).json({
@@ -166,7 +174,7 @@ exports.updateGoal = async (req, res) => {
 exports.deleteGoal = async (req, res) => {
   try {
     // get goal by id
-    const goalData = await goal.findByIdAndDelete(req.params.id);
+    const goalData = await Goal.findByIdAndDelete(req.params.id);
     // handle error
     if (!goalData) {
       return res.status(404).json({
@@ -190,11 +198,19 @@ exports.deleteGoal = async (req, res) => {
 
 // create challenge
 exports.createChallenge = async (req, res) => {
+  const decoded = res.locals.decoded;
+  const adminId = decoded.data.admin._id;
   try {
-    // get data from request
-    const data = req.body;
     // create challenge
-    const challengeData = await challenge.create(data);
+    const challengeData = await Challenge.create({
+      title: req.body.title,
+      body: req.body.body,
+      AdminAuthor: adminId,
+    });
+    // add challenge to admin
+    const admin = await Admin.findById(adminId).populate("challenges");
+    admin.challenges.push(challengeData._id);
+    await admin.save();
     // send response json
     res.status(200).json({
       result: challengeData,
@@ -210,7 +226,7 @@ exports.createChallenge = async (req, res) => {
 exports.getAllChallenges = async (req, res) => {
   try {
     // get all challenges
-    const challengeData = await challenge.find();
+    const challengeData = await Challenge.find();
     // send response json
     res.status(200).json({
       result: challengeData,
@@ -226,7 +242,7 @@ exports.getAllChallenges = async (req, res) => {
 exports.getChallengeById = async (req, res) => {
   try {
     // get challenge by id
-    const challengeData = await challenge.findById(req.params.id);
+    const challengeData = await Challenge.findById(req.params.id);
     // send response json
     res.status(200).json({
       result: challengeData,
@@ -242,16 +258,16 @@ exports.getChallengeById = async (req, res) => {
 exports.updateChallenge = async (req, res) => {
   try {
     // get challenge by id
-    const challengeData = await challenge.findByIdAndUpdate(
+    const challengeData = await Challenge.findByIdAndUpdate(
       req.params.id,
       req.body
     );
     // handle error
-      if (!challengeData) {
-        return res.status(404).json({
-          massage: "Challenge not found",
-        });
-      }
+    if (!challengeData) {
+      return res.status(404).json({
+        massage: "Challenge not found",
+      });
+    }
     // send response json
     res.status(200).json({
       result: challengeData,
@@ -267,12 +283,12 @@ exports.updateChallenge = async (req, res) => {
 exports.deleteChallenge = async (req, res) => {
   try {
     // get challenge by id
-    const challengeData = await challenge.findByIdAndDelete(req.params.id);
+    const challengeData = await Challenge.findByIdAndDelete(req.params.id);
     // handle error
     if (!challengeData) {
       return res.status(404).json({
         massage: "Challenge not found",
-      })
+      });
     }
     // send response json
     res.status(200).json({
