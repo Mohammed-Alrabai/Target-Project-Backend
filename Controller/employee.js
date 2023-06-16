@@ -7,6 +7,27 @@ const Challenge = require('../Models/challeng.js')
 const Comment = require('../Models/comment.js')
 const Employee = require('../Models/employee')
 
+
+//employee Login
+exports.EmployeeLogin = (req,res)=>{
+const username = req.body.username;
+const password = req.body.password;
+Employee.findOne({ username: username })
+    .select("+password")
+    .then(async (result) => {
+ const hashedPass = result.password;
+ const compare = await bcrypt.compare(password, hashedPass);
+    if (compare) {
+        const token = jwt.sign({ result }, process.env.secret, {
+          expiresIn: "1h",
+        });
+         res.status(200).json({ token: token });
+      }
+       }).catch((err) => {
+      res.json(err);
+    });
+}
+
 //to view AllChallanges
 exports.ChallangeList = (req,res)=>{
 Challenge.find().then((challangeList)=>{
@@ -73,6 +94,5 @@ Employee.findById(empId).then((employee)=>{
   message: error,
 })
 })
-
 }
 
