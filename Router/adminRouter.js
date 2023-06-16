@@ -18,6 +18,9 @@ const {
   deleteChallenge,
   // import subAdmin function
   createSubAdmin,
+  getAllSubAdmin,
+  // import employee function
+  getAllEmployees,
 } = require("../Controller/admin");
 const { signToken, verifyToken } = require("../Middleware/authentication");
 
@@ -35,13 +38,15 @@ router.patch("/updateGoal/:id", verifyToken, updateGoal);
 router.delete("/deleteGoal/:id", verifyToken, deleteGoal);
 // challenge route
 router.post("/createChallenge", verifyToken, createChallenge);
-router.get("/challenge", verifyToken , getAllChallenges);
-router.get("/challenge/:id", verifyToken , getChallengeById);
-router.patch("/updateChallenge/:id", verifyToken , updateChallenge);
+router.get("/challenge", verifyToken, getAllChallenges);
+router.get("/challenge/:id", verifyToken, getChallengeById);
+router.patch("/updateChallenge/:id", verifyToken, updateChallenge);
 router.delete("/deleteChallenge/:id", verifyToken, deleteChallenge);
 
 // subAdmin route
 router.post("/createSubAdmin", verifyToken, createSubAdmin);
-
+router.get("/subAdmin", verifyToken, getAllSubAdmin);
+// employee route
+router.get("/employee", verifyToken, getAllEmployees);
 
 module.exports = router;

@@ -344,3 +344,43 @@ exports.createSubAdmin = async (req, res) => {
     }
   }
 };
+// get all subAdmin
+exports.getAllSubAdmin = async (req, res) => {
+  try {
+    // get all subAdmin
+    const subAdminData = await SubAdmin.find();
+    // send response json
+    res.status(200).json({
+      result: subAdminData,
+    });
+    // handle error
+  } catch (error) {
+    res.status(500).json({
+      message: error,
+    });
+  }
+};
+
+// end subAdmin function
+
+// employee function
+
+// import employee
+const Employee = require("../Models/employee.js");
+
+// get all employees
+exports.getAllEmployees = async (req, res) => {
+  try {
+    // get all employees
+    const employeeData = await Employee.find();
+    // send response json
+    res.status(200).json({
+      result: employeeData,
+    });
+    // handle error
+  } catch (error) {
+    res.status(500).json({
+      message: error,
+    });
+  }
+};
