@@ -29,14 +29,15 @@ newEmployee.save().then((newEmp)=>{
 exports.EmployeeLogin = (req,res)=>{
 const username = req.body.username;
 const password = req.body.password;
-
+console.log(username + password)
 Employee.findOne({ username: username })
     .select("+password")
     .then(async (result) => {
+      console.log(result)
  const hashedPass = result.password;
  const compare = await bcrypt.compare(password, hashedPass);
     if (compare) {
-        const token = jwt.sign({ result }, process.env.secret, {
+        const token = jwt.sign({ result }, process.env.JWT_SECRET, {
           expiresIn: "1h",
         });
         console.log(token)
@@ -81,8 +82,9 @@ exports.Comment = (req,res)=>{
 const ChallengId  = req.params.id
 console.log(ChallengId)
 const inputbody = req.body.inputbody
-const emp = res.locals.decoder;
-const empId = student.result._id;
+const emp = res.locals.decoded;
+console.log(emp)
+const empId = emp.result._id;
 
 const newComment = new Comment({
   body:inputbody,
