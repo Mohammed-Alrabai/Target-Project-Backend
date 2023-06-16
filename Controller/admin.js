@@ -45,7 +45,6 @@ exports.createAdmin = async (req, res) => {
     }
   }
 };
-//
 // login admin
 exports.loginAdmin = async (req, res, next) => {
   try {
@@ -97,6 +96,7 @@ exports.createGoal = async (req, res) => {
     const data = req.body;
     // create goal
     const goalData = await goal.create(data);
+    goalData.push();
     // send response json
     res.status(200).json({
       result: goalData,
