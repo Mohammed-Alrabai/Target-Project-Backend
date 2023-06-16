@@ -6,12 +6,30 @@ const bcrypt = require("bcrypt");
 const Challenge = require('../Models/challeng.js')
 const Comment = require('../Models/comment.js')
 const Employee = require('../Models/employee')
+const saltRounds = Number(process.env.saltRounds)
+//create employee
+exports.CreateEmployee = async (req,res)=>{
+const username = "lina";
+const password = "lina12345";
+const passHash = await bcrypt.hash(password,saltRounds );
+
+const newEmployee = new Employee({
+  username:username,
+  password:passHash
+})
+newEmployee.save().then((newEmp)=>{
+   res.status(200).json(newEmp);
+}).catch((err) => {
+      res.json(err);
+    });
+}
 
 
 //employee Login
 exports.EmployeeLogin = (req,res)=>{
 const username = req.body.username;
 const password = req.body.password;
+
 Employee.findOne({ username: username })
     .select("+password")
     .then(async (result) => {
@@ -21,10 +39,11 @@ Employee.findOne({ username: username })
         const token = jwt.sign({ result }, process.env.secret, {
           expiresIn: "1h",
         });
+        console.log(token)
          res.status(200).json({ token: token });
       }
-       }).catch((err) => {
-      res.json(err);
+       }).catch((error) => {
+      res.json(error);
     });
 }
 
