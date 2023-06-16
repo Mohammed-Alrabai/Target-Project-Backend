@@ -3,7 +3,8 @@ const express = require("express");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 const bcrypt = require("bcrypt");
-const saltRounds = 10;
+const  saltRounds = Number(process.env.salt);
+
 dotenv.config();
 // import the admin model
 const admin = require("../Models/admin.js");
