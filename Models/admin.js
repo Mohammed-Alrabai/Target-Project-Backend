@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const adminSchema = new mongoose.Schema(
   {
@@ -7,17 +7,19 @@ const adminSchema = new mongoose.Schema(
       type: String,
       unique: true,
     },
-    password: String,
+    password: {
+      type: String,
+      select: false,
+    },
     email: String,
 
     // Relationship Here
-    
   },
   {
     timestamps: true,
   }
 );
 
-const Admin = mongoose.model('Admin', adminSchema);
+const Admin = mongoose.model("Admin", adminSchema);
 
 module.exports = Admin;

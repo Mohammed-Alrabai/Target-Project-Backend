@@ -7,11 +7,13 @@ const employeeSchema = new mongoose.Schema(
       type: String,
       unique: true,
     },
-    password: String,
+    password: {
+      type: String,
+      select: false,
+    },
     email: String,
 
     // Relationship Here
-    
   },
   {
     timestamps: true,

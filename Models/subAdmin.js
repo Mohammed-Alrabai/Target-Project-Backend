@@ -7,7 +7,10 @@ const subAdminSchema = new mongoose.Schema(
       type: String,
       unique: true,
     },
-    password: String,
+    password: {
+      type: String,
+      select: false,
+    },
     email: {
       type: String,
       unique: true,
