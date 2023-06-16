@@ -17,7 +17,12 @@ const commentSchema = new mongoose.Schema({
     EmployeeAuther:{
        type: mongoose.Schema.Types.ObjectId,
        ref:"Employee"
+    },
+       ChallangeId:{
+       type: mongoose.Schema.Types.ObjectId,
+       ref:"Challenge"
     }
+
 },
 {
     timestamps: true,

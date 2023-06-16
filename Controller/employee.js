@@ -5,6 +5,7 @@ const dotenv = require("dotenv");
 const bcrypt = require("bcrypt");
 const Challenge = require('../Models/challeng.js')
 const Comment = require('../Models/comment.js')
+const Employee = require('../Models/employee')
 
 //to view AllChallanges
 exports.ChallangeList = (req,res)=>{
@@ -40,11 +41,30 @@ exports.Comment = (req,res)=>{
 const ChallengId  = req.params.id
 console.log(ChallengId)
 const inputbody = req.body.inputbody
+const emp = res.locals.decoder;
+const empId = student.result._id;
+
 const newComment = new Comment({
   body:inputbody,
+  EmployeeAuther:ChallengId
 })
 
 newComment.save().then((newCommentResult)=>{
+///adding comment to the employee model (relationship)
+
+Employee.findById(empId).then((employee)=>{
+  comments = newComment_id
+  employee.save().then((savedComment)=>{
+     res.status(200).json({
+   result: savedComment
+  })
+  })
+}).catch((error)=>{
+  res.status(500).json({
+  message: error,
+})
+})
+
   res.status(200).json({
    result: newCommentResult
   })
