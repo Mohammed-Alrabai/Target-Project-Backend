@@ -13,7 +13,7 @@ dotenv.config();
 app.use(cors());
 app.use(bodyParser.json());
 
-const port = process.env.PORT || 8800;
+const port = process.env.PORT;
 
 // connecting to the database
 database();
