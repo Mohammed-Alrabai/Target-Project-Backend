@@ -12,9 +12,7 @@ const employeeSchema = new mongoose.Schema(
       select: false,
     },
     email: String,
-role:{
-  type: String,
-},
+    ///role:String,
     // Relationship Here
      comments:[{
       type: mongoose.Schema.Types.ObjectId,

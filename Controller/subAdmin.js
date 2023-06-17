@@ -14,13 +14,17 @@ const Challenge = require("../Models/challeng.js");
 const Goal = require("../Models/goal.js");
 
 exports.createSubAdmin = async (req, res) => {
-  const username = "mohammad";
-  const password = "moh123";
+  const username = req.body.username;
+  const password = req.body.password;
+  const email = req.body.email;
+  const role = req.body.role;
   const passHash = await bcrypt.hash(password, saltRounds);
 
   const newsubAdmin = new subAdmin({
     username: username,
     password: passHash,
+    email: email,
+    userRole: role,
   });
   newsubAdmin
     .save()

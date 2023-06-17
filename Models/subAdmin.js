@@ -15,7 +15,7 @@ const subAdminSchema = new mongoose.Schema(
       type: String,
       unique: true,
     },
-    role:{
+    userRole:{
   type: String,
 },
     // Relationship Here

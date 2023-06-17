@@ -12,7 +12,7 @@ const adminSchema = new mongoose.Schema(
       select: false,
     },
     email: String,
-role:{
+userRole:{
   type: String,
 },
 
