@@ -8,7 +8,7 @@ const Comment = require("../Models/comment.js");
 const Employee = require("../Models/employee");
 const saltRounds = Number(process.env.saltRounds);
 //create employee
-exports.CreateEmployee = async (req, res) => {
+  exports.CreateEmployee = async (req, res) => {
   const username = "mohammad";
   const password = "moh123";
   const passHash = await bcrypt.hash(password, saltRounds);
@@ -105,7 +105,7 @@ exports.Comment = (req, res) => {
           });
         })
         .catch((error) => {
-          res.status(500).json({
+            res.status(500).json({
             message: error,
           });
         });
