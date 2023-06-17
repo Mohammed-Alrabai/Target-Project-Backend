@@ -36,7 +36,6 @@ exports.EmployeeLogin = (req, res) => {
   Employee.findOne({ username: username })
     .select("+password")
     .then(async (result) => {
-      console.log(result);
       const hashedPass = result.password;
       const compare = await bcrypt.compare(password, hashedPass);
       if (compare) {
@@ -69,10 +68,8 @@ exports.ChallangeList = (req, res) => {
 // get challenge by id
 exports.ChallengeById = (req, res) => {
   const ChallengId = req.params.id;
-  console.log(ChallengId);
   Challenge.findById(ChallengId)
     .then((theChallengResult) => {
-      console.log(theChallengResult);
       res.status(200).json({
         result: theChallengResult,
       });
@@ -87,10 +84,8 @@ exports.ChallengeById = (req, res) => {
 // get challenge by id
 exports.Comment = (req, res) => {
   const ChallengId = req.params.id;
-  console.log(ChallengId);
   const inputbody = req.body.inputbody;
   const emp = res.locals.decoded;
-  console.log(emp);
   const empId = emp.result._id;
 
   const newComment = new Comment({
@@ -113,7 +108,6 @@ exports.Comment = (req, res) => {
           });
         })
         .catch((error) => {
-          console.log(error);
           res.status(500).json({
             message: error,
           });
