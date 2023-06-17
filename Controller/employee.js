@@ -97,14 +97,11 @@ exports.Comment = (req, res) => {
     .save()
     .then((newCommentResult) => {
       ///adding comment to the employee model (relationship)
-
       Employee.findById(empId)
         .then((employee) => {
-          comments = newComment_id;
+          employee.comments.push(newCommentResult._id)
           employee.save().then((savedComment) => {
-            res.status(200).json({
-              result: savedComment,
-            });
+           console.log(savedComment)
           });
         })
         .catch((error) => {
