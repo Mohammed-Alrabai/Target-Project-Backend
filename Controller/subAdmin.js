@@ -89,5 +89,39 @@ res.status(200).json({
         result: challeng,
       });
 })
+}
+
+//create Private Goal
+exports.createPrivateGoal = (req,res)=>{
+const title = req.body.title
+const body = req.body.body
+const type = req.body.type
+const subAdmin = res.locals.decoded;
+const subAdminId = subAdmin.result._id;
+
+const newGoal = new Goal({
+title:title,
+body:body,
+type:type
+})
+newGoal.save().then((savedGoal)=>{
+SubAdmin.findById(subAdminId).then((subAdmin)=>{
+subAdmin.Goals.push(savedGoal._id)
+subAdmin.save().then((savedsubAdmin)=>{
+console.log(savedsubAdmin)
+}).catch((error)=>{
+ res.status(500).json({
+            message: error,
+          });
+})
+})
+res.status(200).json({
+        result: savedGoal,
+      });
+}).catch((error)=>{
+ res.status(500).json({
+            message: error,
+          });
+        })
 
 }
