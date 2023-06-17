@@ -12,6 +12,9 @@ const adminSchema = new mongoose.Schema(
       select: false,
     },
     email: String,
+role:{
+  type: String,
+},
 
     // Relationship Here
     challenges:[{
