@@ -3,7 +3,6 @@ const express = require("express");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 const bcrypt = require("bcrypt");
-
 const saltRounds = Number(process.env.salt);
 dotenv.config();
 
@@ -15,5 +14,23 @@ const Challenge = require("../Models/challeng.js");
 const Goal = require("../Models/goal.js");
 
 exports.createSubAdmin = async (req, res) => {
-    
+  const username = "mohammad";
+  const password = "moh123";
+  const passHash = await bcrypt.hash(password, saltRounds);
+
+  const newsubAdmin = new subAdmin({
+    username: username,
+    password: passHash,
+  });
+  newsubAdmin
+    .save()
+    .then((newSubAdmin) => {
+      res.status(200).json({
+        result: newSubAdmin,
+      });
+    })
+    .catch((error) => {
+      res.json(error);
+    });
+
 }
