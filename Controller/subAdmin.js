@@ -60,3 +60,34 @@ exports.subAdminLogin = (req, res) => {
       res.json(error);
     });
 };
+
+//create Challange
+exports.createChallange= (req,res)=>{
+const title = req.body.title
+const body = req.body.body
+const proved = req.body.proved
+const subAdmin = res.locals.decoded;
+const subAdminId = subAdmin.result._id;
+
+const newChallange = new Challenge({
+    title:title,
+    body:body,
+    proved:proved
+})
+newChallange.save().then((challeng)=>{
+SubAdmin.findById(subAdminId).then((subAdmin)=>{
+    subAdmin.challenges.push(challeng._id)
+    subAdmin.save().then((savedChallange)=>{
+    console.log(savedChallange)
+    })
+}).catch((error)=>{
+     res.status(500).json({
+            message: error,
+          });
+})
+res.status(200).json({
+        result: challeng,
+      });
+})
+
+}
