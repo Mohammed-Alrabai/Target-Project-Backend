@@ -19,6 +19,7 @@ const port = process.env.PORT || 8000;
 database();
 // Require routes
 const adminRouter = require("./Router/adminRouter.js");
+const employeeRouter =require("./Router/employeeRouter.js")
 
 // Api routes
 
@@ -27,6 +28,9 @@ const adminRouter = require("./Router/adminRouter.js");
 // Api routes for admin
 // https://localhost:8000/api/admin
 app.use("/api/admin", adminRouter);
+
+// https://localhost:8000/api/admin
+app.use("/api/employee", employeeRouter);
 
 // Api routes for departments
 
