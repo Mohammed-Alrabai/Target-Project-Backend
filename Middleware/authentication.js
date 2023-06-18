@@ -5,18 +5,18 @@ dotenv.config();
 
 exports.signToken = async (req, res, next) => {
   try {
-      // get data from admin Controller
-  const data = res.locals;
+  // get data from admin Controller
+  const result = res.locals.admin;
   // create token
-  const token = jwt.sign({ data }, process.env.JWT_SECRET);
+  const token = jwt.sign({ result }, process.env.JWT_SECRET);
   // send token
   res.status(200).json({
-    data , token,
+    result , token,
   })
   }
   catch (error) {
     res.status(500).json({
-      message: error,
+      message: "Unauthorized"
     });
   }  
 };
@@ -29,8 +29,6 @@ exports.verifyToken = async (req, res, next) => {
     const token = req.headers.authorization.split(" ")[1];
     const decoded = await jwt.verify(token, process.env.JWT_SECRET);
     res.locals.decoded = decoded;
-    console.log("nnnnnnnnnnnnnnn")
-    console.log(decoded)
     next();
   } catch (err) {
     res.status(401).json({ massage: "Please Login" });

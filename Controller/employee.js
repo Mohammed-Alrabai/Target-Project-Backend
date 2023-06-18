@@ -8,7 +8,7 @@ const Comment = require("../Models/comment.js");
 const Employee = require("../Models/employee");
 const saltRounds = Number(process.env.saltRounds);
 //create employee
-exports.CreateEmployee = async (req, res) => {
+  exports.CreateEmployee = async (req, res) => {
   const username = "mohammad";
   const password = "moh123";
   const passHash = await bcrypt.hash(password, saltRounds);
@@ -36,7 +36,6 @@ exports.EmployeeLogin = (req, res) => {
   Employee.findOne({ username: username })
     .select("+password")
     .then(async (result) => {
-      console.log(result);
       const hashedPass = result.password;
       const compare = await bcrypt.compare(password, hashedPass);
       if (compare) {
@@ -69,10 +68,8 @@ exports.ChallangeList = (req, res) => {
 // get challenge by id
 exports.ChallengeById = (req, res) => {
   const ChallengId = req.params.id;
-  console.log(ChallengId);
   Challenge.findById(ChallengId)
     .then((theChallengResult) => {
-      console.log(theChallengResult);
       res.status(200).json({
         result: theChallengResult,
       });
@@ -87,10 +84,8 @@ exports.ChallengeById = (req, res) => {
 // get challenge by id
 exports.Comment = (req, res) => {
   const ChallengId = req.params.id;
-  console.log(ChallengId);
   const inputbody = req.body.inputbody;
   const emp = res.locals.decoded;
-  console.log(emp);
   const empId = emp.result._id;
 
   const newComment = new Comment({
@@ -102,19 +97,15 @@ exports.Comment = (req, res) => {
     .save()
     .then((newCommentResult) => {
       ///adding comment to the employee model (relationship)
-
       Employee.findById(empId)
         .then((employee) => {
-          comments = newComment_id;
+          employee.comments.push(newCommentResult._id)
           employee.save().then((savedComment) => {
-            res.status(200).json({
-              result: savedComment,
-            });
+           console.log(savedComment)
           });
         })
         .catch((error) => {
-          console.log(error);
-          res.status(500).json({
+            res.status(500).json({
             message: error,
           });
         });

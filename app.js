@@ -13,13 +13,14 @@ dotenv.config();
 app.use(cors());
 app.use(bodyParser.json());
 
-const port = process.env.PORT || 8000;
+const port = process.env.PORT;
 
 // connecting to the database
 database();
 // Require routes
 const adminRouter = require("./Router/adminRouter.js");
 const employeeRouter =require("./Router/employeeRouter.js")
+const subAdminRouter =require("./Router/subAdminRouter")
 
 // Api routes
 
@@ -32,6 +33,8 @@ app.use("/api/admin", adminRouter);
 // https://localhost:8000/api/admin
 app.use("/api/employee", employeeRouter);
 
+// https://localhost:8000/api/admin
+app.use("/api/subAdmin", subAdminRouter);
 // Api routes for departments
 
 app.listen(port, () => {

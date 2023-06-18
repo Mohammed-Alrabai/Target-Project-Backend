@@ -23,7 +23,7 @@ const {
   getAllEmployees,
 } = require("../Controller/admin");
 const { signToken, verifyToken } = require("../Middleware/authentication");
-
+const isAuth = require('../Middleware/authorization')
 // Create Admin
 router.post("/", createAdmin);
 // Login Admin
@@ -31,7 +31,7 @@ router.post("/login", loginAdmin, signToken);
 router.get("/admin", verifyToken, getAdmin);
 
 // Goals route
-router.post("/createGoal", verifyToken, createGoal);
+router.post("/createGoal", verifyToken, isAuth, createGoal);
 router.get("/goals", verifyToken, getAllGoals);
 router.get("/goal/:id", verifyToken, getGoalById);
 router.patch("/updateGoal/:id", verifyToken, updateGoal);
