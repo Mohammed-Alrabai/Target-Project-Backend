@@ -321,12 +321,13 @@ exports.createSubAdmin = async (req, res) => {
       email: req.body.email,
       password: req.body.password,
       Department: req.body.department,
+      userRole: req.body.userRole,
     });
     // add subAdmin to department
     const department = await Department.findById(req.body.department).populate(
       "subAdmin"
     );
-    department.subAdmin = subAdminData._id;
+    department.subAdmin.push(subAdminData._id);
     await department.save();
     // send response json
     res.status(200).json({
@@ -340,8 +341,9 @@ exports.createSubAdmin = async (req, res) => {
         message: "Username already exists",
       });
     } else {
+      console.log(error);
       return res.status(500).json({
-        message: error,
+        message: error.massage,
       });
     }
   }
@@ -362,6 +364,71 @@ exports.getAllSubAdmin = async (req, res) => {
     });
   }
 };
+// get subAdmin by id
+exports.getSubAdminById = async (req, res) => {
+  try {
+    // get subAdmin by id
+    const subAdminData = await SubAdmin.findById(req.params.id);
+    // send response json
+    res.status(200).json({
+      result: subAdminData,
+    });
+    // handle error
+  } catch (error) {
+    res.status(500).json({
+      message: error,
+    });
+  }
+}
+// update subAdmin
+exports.updateSubAdmin = async (req, res) => {
+  try {
+    // get subAdmin by id
+    const subAdminData = await SubAdmin.findByIdAndUpdate(
+      req.params.id,
+      req.body
+    );
+    // handle error
+    if (!subAdminData) {
+      return res.status(404).json({
+        massage: "SubAdmin not found",
+      });
+    }
+    // send response json
+    res.status(200).json({
+      result: subAdminData,
+    });
+    // handle error
+  } catch (error) {
+    res.status(500).json({
+      message: error,
+}
+);
+  }
+};
+// delete subAdmin
+exports.deleteSubAdmin = async (req, res) => {
+  try {
+    // get subAdmin by id
+    const subAdminData = await SubAdmin.findByIdAndDelete(req.params.id);
+    // handle error
+    if (!subAdminData) {
+      return res.status(404).json({
+        massage: "SubAdmin not found",
+      });
+    }
+    // send response json
+    res.status(200).json({
+      result: subAdminData,
+    });
+    // handle error
+  } catch (error) {
+    res.status(500).json({
+      message: error,
+    });
+  }
+}
+
 
 // end subAdmin function
 
@@ -386,3 +453,96 @@ exports.getAllEmployees = async (req, res) => {
     });
   }
 };
+// get employee by id
+exports.getEmployeeById = async (req, res) => {
+  try {
+    // get employee by id
+    const employeeData = await Employee.findById(req.params.id);
+    // send response json
+    res.status(200).json({
+      result: employeeData,
+    });
+    // handle error
+  } catch (error) {
+    res.status(500).json({
+      message: error,
+    });
+  }
+}
+// create employee
+exports.createEmployee = async (req, res) => {
+  try {
+    // create employee
+    const employeeData = await Employee.create({
+      name: req.body.name,
+      username: req.body.username,
+      email: req.body.email,
+      password: req.body.password,
+      Department: req.body.department,
+      userRole: req.body.userRole,
+    });
+    // add employee to department
+    const department = await Department.findById(req.body.department).populate(
+      "employee"
+    );
+    department.employee = employeeData._id;
+    await department.save();
+    // send response json
+    res.status(200).json({
+      result: employeeData,
+    });
+    // handle error
+  } catch (error) {
+    res.status(500).json({
+      message: error,
+    });
+  }
+}
+// delete employee
+exports.deleteEmployee = async (req, res) => {
+  try {
+    // get employee by id
+    const employeeData = await Employee.findByIdAndDelete(req.params.id);
+    // handle error
+    if (!employeeData) {
+      return res.status(404).json({
+        massage: "Employee not found",
+      });
+    }
+    // send response json
+    res.status(200).json({
+      result: employeeData,
+    });
+    // handle error
+  } catch (error) {
+    res.status(500).json({
+      message: error,
+    });
+  }
+}
+// update employee
+exports.updateEmployee = async (req, res) => {
+  try {
+    // get employee by id
+    const employeeData = await Employee.findByIdAndUpdate(
+      req.params.id,
+      req.body
+    );
+    // handle error
+    if (!employeeData) {
+      return res.status(404).json({
+        massage: "Employee not found",
+      });
+    }
+    // send response json
+    res.status(200).json({
+      result: employeeData,
+    });
+    // handle error
+  } catch (error) {
+    res.status(500).json({
+      message: error,
+})
+}
+}
+

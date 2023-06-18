@@ -17,7 +17,7 @@ const subAdminSchema = new mongoose.Schema(
     },
     userRole:{
   type: String,
-},
+    },
     // Relationship Here
     Department: {
       type: mongoose.Schema.Types.ObjectId,
