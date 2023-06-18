@@ -8,4 +8,6 @@ router.post("/subAdminLogin",subAdminController.subAdminLogin)
 router.post("/createChallange",verifyToken,subAdminController.createChallange)
 router.post("/createGoal",verifyToken,subAdminController.createPrivateGoal)
 router.get("/employeeList",subAdminController.employeeList)
+router.patch("/employeeUpdate/:id",subAdminController.employeeUpdate)
+router.post("/Createemployee",subAdminController.Createemployee)
 module.exports = router;

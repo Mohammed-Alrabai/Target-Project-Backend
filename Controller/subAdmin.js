@@ -139,3 +139,57 @@ Employee.find().then((allEmployee)=>{
           });
         })
 }
+
+exports.employeeUpdate =(req,res)=>{
+  const id = req.params.id
+  const name = req.body.name
+  const username = req.body.username
+  const Department = req.body.Department
+  const email = req.body.email;
+
+  Employee.findById(id).then((employee)=>{
+    employee.name =name
+    employee.username =username
+    employee.Department = Department
+    employee.email = email
+employee.save().then((updatedemp)=>{
+res.status(200).json({
+      result:updatedemp,
+  })
+}).catch((error)=>{
+ res.status(500).json({
+            message: error,
+          });
+        })
+     
+  }).catch((error)=>{
+ res.status(500).json({
+            message: error,
+          });
+        })
+}
+
+//create Employee
+exports.Createemployee =(req,res)=>{
+const name = req.body.name
+const username = req.body.username;
+const password = req.body.password;
+const email = req.body.email;
+const userRole = req.body.userRole;
+const newEmp = new Employee({
+  name: name,
+  username:username,
+  password:password,
+  userRole:userRole
+
+})
+newEmp.save().then((newEmployee)=>{
+  res.status(200).json({
+      result:newEmployee,
+  })
+}).catch((error)=>{
+ res.status(500).json({
+            message: error,
+          });
+        })
+}
