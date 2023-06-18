@@ -12,6 +12,8 @@ const SubAdmin = require("../Models/subAdmin.js");
 const Challenge = require("../Models/challeng.js");
 // import the goal model
 const Goal = require("../Models/goal.js");
+//import the employee
+const Employee = require("../Models/employee")
 
 
 ///create subadmin for trying code
@@ -124,4 +126,16 @@ res.status(200).json({
           });
         })
 
+}
+//Employee CRUD
+exports.employeeList = (req,res)=>{
+Employee.find().then((allEmployee)=>{
+  res.status(200).json({
+      result: allEmployee,
+  })
+}).catch((error)=>{
+ res.status(500).json({
+            message: error,
+          });
+        })
 }
