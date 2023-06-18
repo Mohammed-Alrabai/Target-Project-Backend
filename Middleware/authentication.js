@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 dotenv.config();
 
+// import the admin model
 exports.signToken = async (req, res, next) => {
   try {
   // get data from admin Controller
