@@ -27,7 +27,7 @@ const isAuth = require('../Middleware/authorization')
 // Create Admin
 router.post("/", createAdmin);
 // Login Admin
-router.get("/login", loginAdmin, signToken);
+router.post("/login", loginAdmin, signToken);
 router.get("/admin", verifyToken, getAdmin);
 
 // Goals route
@@ -47,6 +47,6 @@ router.delete("/deleteChallenge/:id", verifyToken, deleteChallenge);
 router.post("/createSubAdmin", verifyToken, createSubAdmin);
 router.get("/subAdmin", verifyToken, getAllSubAdmin);
 // employee route
-router.get("/employee", verifyToken, getAllEmployees);
+router.get("/employee", getAllEmployees);
 
 module.exports = router;

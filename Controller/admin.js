@@ -61,7 +61,7 @@ exports.loginAdmin = async (req, res, next) => {
     const pass = await bcrypt.compare(password, adminData.password);
     // check if password is correct and admin exists , send data to middleware
     if (adminData && pass === true) {
-      res.locals.admin = adminData;
+      res.locals = adminData;
       next();
       // handle error for username and password
     } else {
