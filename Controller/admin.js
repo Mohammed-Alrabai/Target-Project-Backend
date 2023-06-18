@@ -47,7 +47,9 @@ exports.createAdmin = async (req, res) => {
       });
     }
   }
-};
+    
+ };
+
 // login admin
 exports.loginAdmin = async (req, res, next) => {
   try {
@@ -59,7 +61,7 @@ exports.loginAdmin = async (req, res, next) => {
     const pass = await bcrypt.compare(password, adminData.password);
     // check if password is correct and admin exists , send data to middleware
     if (adminData && pass === true) {
-      res.locals.admin = adminData;
+      res.locals = adminData;
       next();
       // handle error for username and password
     } else {
@@ -95,7 +97,7 @@ exports.getAdmin = async (req, res) => {
 // create goal
 exports.createGoal = async (req, res) => {
   const decoded = res.locals.decoded;
-  const adminId = decoded.data.admin._id;
+  const adminId = decoded.result._id;
   try {
     // create goal
     const goalData = await Goal.create({
@@ -202,7 +204,7 @@ exports.deleteGoal = async (req, res) => {
 // create challenge
 exports.createChallenge = async (req, res) => {
   const decoded = res.locals.decoded;
-  const adminId = decoded.data.admin._id;
+  const adminId = decoded.result._id;
   try {
     // create challenge
     const challengeData = await Challenge.create({

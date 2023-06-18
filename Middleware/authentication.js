@@ -4,13 +4,21 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 exports.signToken = async (req, res, next) => {
+  try {
   // get data from admin Controller
-  const data = res.locals;
+  const result = res.locals.admin;
   // create token
-  const token = jwt.sign({ data }, process.env.JWT_SECRET);
+  const token = jwt.sign({ result }, process.env.JWT_SECRET);
   // send token
-  res.status(200).json({ data, token });
-  res.status(401).json({ message: "Unauthorized" });
+  res.status(200).json({
+    result , token,
+  })
+  }
+  catch (error) {
+    res.status(500).json({
+      message: "Unauthorized"
+    });
+  }  
 };
 
 exports.verifyToken = async (req, res, next) => {
