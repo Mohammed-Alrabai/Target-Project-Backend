@@ -11,6 +11,7 @@ const employeeSchema = new mongoose.Schema(
       type: String,
       select: false,
     },
+    
     email: String,
     userRole:String,
     // Relationship Here
