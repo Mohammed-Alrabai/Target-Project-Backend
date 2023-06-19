@@ -47,8 +47,7 @@ exports.createAdmin = async (req, res) => {
       });
     }
   }
-    
- };
+};
 
 // login admin
 exports.loginAdmin = async (req, res, next) => {
@@ -203,20 +202,22 @@ exports.deleteGoal = async (req, res) => {
 
 // create challenge
 exports.createChallenge = async (req, res) => {
-  const decoded = res.locals.decoded;
-  const adminId = decoded.result._id;
+  //delete admin from challenge for frontend
+  // const decoded = res.locals.decoded;
+  // const adminId = decoded.result._id;
   try {
     // create challenge
     const challengeData = await Challenge.create({
       title: req.body.title,
       body: req.body.body,
-      AdminAuthor: adminId,
+      // AdminAuthor: adminId,
+      date: req.body.date,
       type: req.body.type,
     });
     // add challenge to admin
-    const admin = await Admin.findById(adminId).populate("challenges");
-    admin.challenges.push(challengeData._id);
-    await admin.save();
+    // const admin = await Admin.findById(adminId).populate("challenges");
+    // admin.challenges.push(challengeData._id);
+    // await admin.save();
     // send response json
     res.status(200).json({
       result: challengeData,
@@ -232,7 +233,7 @@ exports.createChallenge = async (req, res) => {
 exports.getAllChallenges = async (req, res) => {
   try {
     // get all challenges
-    const challengeData = await Challenge.find();
+    const challengeData = await Challenge.find().populate("AdminAuthor");
     // send response json
     res.status(200).json({
       result: challengeData,
@@ -380,7 +381,7 @@ exports.getSubAdminById = async (req, res) => {
       message: error,
     });
   }
-}
+};
 // update subAdmin
 exports.updateSubAdmin = async (req, res) => {
   try {
@@ -403,8 +404,7 @@ exports.updateSubAdmin = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       message: error,
-}
-);
+    });
   }
 };
 // delete subAdmin
@@ -428,8 +428,7 @@ exports.deleteSubAdmin = async (req, res) => {
       message: error,
     });
   }
-}
-
+};
 
 // end subAdmin function
 
@@ -469,7 +468,7 @@ exports.getEmployeeById = async (req, res) => {
       message: error,
     });
   }
-}
+};
 // create employee
 exports.createEmployee = async (req, res) => {
   try {
@@ -494,11 +493,12 @@ exports.createEmployee = async (req, res) => {
     });
     // handle error
   } catch (error) {
+    console.log(error);
     res.status(500).json({
-      message: error,
+      message: error.massage,
     });
   }
-}
+};
 // delete employee
 exports.deleteEmployee = async (req, res) => {
   try {
@@ -520,7 +520,7 @@ exports.deleteEmployee = async (req, res) => {
       message: error,
     });
   }
-}
+};
 // update employee
 exports.updateEmployee = async (req, res) => {
   try {
@@ -543,7 +543,25 @@ exports.updateEmployee = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       message: error,
-})
-}
-}
+    });
+  }
+};
 
+//import comment model
+const Comment = require("../Models/comment.js");
+// get all comments
+exports.getAllComments = async (req, res) => {
+  try {
+    // get all comments
+    const commentData = await Comment.find().populate("ChallangeId");
+    // send response json
+    res.status(200).json({
+      result: commentData,
+    });
+    // handle error
+  } catch (error) {
+    res.status(500).json({
+      message: error,
+    });
+  }
+};

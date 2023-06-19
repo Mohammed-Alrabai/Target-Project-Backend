@@ -8,9 +8,9 @@ const Comment = require("../Models/comment.js");
 const Employee = require("../Models/employee");
 const saltRounds = Number(process.env.saltRounds);
 //create employee
-  exports.CreateEmployee = async (req, res) => {
-  const username = "mohammad";
-  const password = "moh123";
+exports.CreateEmployee = async (req, res) => {
+  const username = req.body.username;
+  const password = req.body.password;
   const passHash = await bcrypt.hash(password, saltRounds);
 
   const newEmployee = new Employee({
@@ -36,6 +36,7 @@ exports.EmployeeLogin = (req, res) => {
   Employee.findOne({ username: username })
     .select("+password")
     .then(async (result) => {
+      console.log(result);
       const hashedPass = result.password;
       const compare = await bcrypt.compare(password, hashedPass);
       if (compare) {
@@ -46,7 +47,9 @@ exports.EmployeeLogin = (req, res) => {
       }
     })
     .catch((error) => {
-      res.json(error);
+      res.status(500).json({
+        message: error.message,
+      })
     });
 };
 
@@ -99,13 +102,13 @@ exports.Comment = (req, res) => {
       ///adding comment to the employee model (relationship)
       Employee.findById(empId)
         .then((employee) => {
-          employee.comments.push(newCommentResult._id)
+          employee.comments.push(newCommentResult._id);
           employee.save().then((savedComment) => {
-           console.log(savedComment)
+            console.log(savedComment);
           });
         })
         .catch((error) => {
-            res.status(500).json({
+          res.status(500).json({
             message: error,
           });
         });
