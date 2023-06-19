@@ -324,10 +324,11 @@ exports.createSubAdmin = async (req, res) => {
       userRole: req.body.userRole,
     });
     // add subAdmin to department
-    const department = await Department.findById(req.body.department).populate(
+    const department = await Department.findOne(req.body.department).populate(
       "subAdmin"
     );
-    department.subAdmin.push(subAdminData._id);
+    console.log(department);
+    department.subAdmin = subAdminData._id;
     await department.save();
     // send response json
     res.status(200).json({
