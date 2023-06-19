@@ -15,6 +15,7 @@ const employeeSchema = new mongoose.Schema(
     userRole:String,
     // Relationship Here
      comments:[{
+      
       type: mongoose.Schema.Types.ObjectId,
        ref:"Goal"
     }],
