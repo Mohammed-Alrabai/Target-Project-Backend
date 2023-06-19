@@ -30,7 +30,7 @@ const {
   updateEmployee,
 } = require("../Controller/admin");
 const { signToken, verifyToken } = require("../Middleware/authentication");
-const isAuth = require('../Middleware/authorization')
+const isAuth = require("../Middleware/authorization");
 // Create Admin
 router.post("/", createAdmin);
 // Login Admin
@@ -62,5 +62,6 @@ router.get("/employee/:id", getEmployeeById);
 router.post("/createEmployee", verifyToken, createEmployee);
 router.delete("/deleteEmployee/:id", verifyToken, deleteEmployee);
 router.patch("/updateEmployee/:id", verifyToken, updateEmployee);
+// export router
 
 module.exports = router;
