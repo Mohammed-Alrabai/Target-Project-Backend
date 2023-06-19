@@ -21,6 +21,7 @@ database();
 const adminRouter = require("./Router/adminRouter.js");
 const employeeRouter =require("./Router/employeeRouter.js")
 const subAdminRouter =require("./Router/subAdminRouter")
+const DepartmentRoute = require("./Router/DepartmentRoute")
 
 // Api routes
 
@@ -36,6 +37,9 @@ app.use("/api/employee", employeeRouter);
 // https://localhost:8000/api/admin
 app.use("/api/subAdmin", subAdminRouter);
 // Api routes for departments
+
+// https://localhost:8000/api/admin
+app.use("/api/department", DepartmentRoute);
 
 app.listen(port, () => {
   console.log("listening on http://localhost:" + port);

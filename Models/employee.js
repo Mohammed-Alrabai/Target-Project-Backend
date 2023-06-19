@@ -16,7 +16,7 @@ const employeeSchema = new mongoose.Schema(
     // Relationship Here
      comments:[{
       type: mongoose.Schema.Types.ObjectId,
-       ref:"Goal"
+       ref:"Comment"
     }],
     Department:{
        type: mongoose.Schema.Types.ObjectId,

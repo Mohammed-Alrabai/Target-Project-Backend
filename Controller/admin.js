@@ -17,6 +17,10 @@ const Goal = require("../Models/goal.js");
 // import the subAdmin model
 const SubAdmin = require("../Models/subAdmin.js");
 
+const Department = require("../Models/department.js");
+
+
+
 // create admin
 exports.createAdmin = async (req, res) => {
   try {
@@ -203,20 +207,20 @@ exports.deleteGoal = async (req, res) => {
 
 // create challenge
 exports.createChallenge = async (req, res) => {
-  const decoded = res.locals.decoded;
-  const adminId = decoded.result._id;
+  // const decoded = res.locals.decoded;
+  // const adminId = decoded.result._id;
   try {
     // create challenge
     const challengeData = await Challenge.create({
       title: req.body.title,
       body: req.body.body,
-      AdminAuthor: adminId,
+      // AdminAuthor: adminId,
       type: req.body.type,
     });
     // add challenge to admin
-    const admin = await Admin.findById(adminId).populate("challenges");
-    admin.challenges.push(challengeData._id);
-    await admin.save();
+    // const admin = await Admin.findById(adminId).populate("challenges");
+    // admin.challenges.push(challengeData._id);
+    // await admin.save();
     // send response json
     res.status(200).json({
       result: challengeData,
@@ -232,7 +236,7 @@ exports.createChallenge = async (req, res) => {
 exports.getAllChallenges = async (req, res) => {
   try {
     // get all challenges
-    const challengeData = await Challenge.find();
+    const challengeData = await Challenge.find().populate("comments");
     // send response json
     res.status(200).json({
       result: challengeData,
@@ -309,7 +313,7 @@ exports.deleteChallenge = async (req, res) => {
 };
 // end challenge function
 // subAdmin function
-const Department = require("../Models/department.js");
+
 
 // create subAdmin
 exports.createSubAdmin = async (req, res) => {
@@ -442,7 +446,7 @@ const Employee = require("../Models/employee.js");
 exports.getAllEmployees = async (req, res) => {
   try {
     // get all employees
-    const employeeData = await Employee.find();
+    const employeeData = await Employee.find().populate('Department');
     // send response json
     res.status(200).json({
       result: employeeData,
@@ -477,22 +481,20 @@ exports.createEmployee = async (req, res) => {
     const employeeData = await Employee.create({
       name: req.body.name,
       username: req.body.username,
-      email: req.body.email,
       password: req.body.password,
       Department: req.body.department,
       userRole: req.body.userRole,
     });
-    // add employee to department
-    const department = await Department.findById(req.body.department).populate(
-      "employee"
-    );
-    department.employee = employeeData._id;
-    await department.save();
-    // send response json
+Department.findById(req.body.department).then((foundedDep)=>{
+  foundedDep.depEmployee.push(employeeData._id)
+  foundedDep.save().then((result)=>{
     res.status(200).json({
-      result: employeeData,
+      result: result,
     });
-    // handle error
+  })
+})
+
+   
   } catch (error) {
     res.status(500).json({
       message: error,
