@@ -9,8 +9,8 @@ const Employee = require("../Models/employee");
 const saltRounds = Number(process.env.saltRounds);
 //create employee
   exports.CreateEmployee = async (req, res) => {
-  const username = "mohammad";
-  const password = "moh123";
+  const username = req.body.username;
+  const password = req.body.password;
   const passHash = await bcrypt.hash(password, saltRounds);
 
   const newEmployee = new Employee({
@@ -33,15 +33,18 @@ const saltRounds = Number(process.env.saltRounds);
 exports.EmployeeLogin = (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
+ 
+  
   Employee.findOne({ username: username })
     .select("+password")
     .then(async (result) => {
-      const hashedPass = result.password;
+       const hashedPass = result.password;
       const compare = await bcrypt.compare(password, hashedPass);
       if (compare) {
         const token = jwt.sign({ result }, process.env.JWT_SECRET, {
           expiresIn: "1h",
         });
+        console.log(token)
         res.status(200).json({ token: token });
       }
     })
@@ -109,6 +112,20 @@ exports.Comment = (req, res) => {
             message: error,
           });
         });
+
+         Challenge.findById(ChallengId)
+        .then((foundedChallange) => {
+          foundedChallange.comments.push(newCommentResult._id)
+          foundedChallange.save().then((savedComment1) => {
+           console.log(savedComment1)
+          });
+        })
+        .catch((error) => {
+            res.status(500).json({
+            message: error,
+          });
+        });
+
 
       res.status(200).json({
         result: newCommentResult,

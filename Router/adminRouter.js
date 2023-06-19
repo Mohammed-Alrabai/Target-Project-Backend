@@ -44,8 +44,8 @@ router.get("/goal/:id", verifyToken, getGoalById);
 router.patch("/updateGoal/:id", verifyToken, updateGoal);
 router.delete("/deleteGoal/:id", verifyToken, deleteGoal);
 // challenge route
-router.post("/createChallenge", verifyToken, createChallenge);
-router.get("/challenge", verifyToken, getAllChallenges);
+router.post("/createChallenge", createChallenge);
+router.get("/challenge", getAllChallenges);
 router.get("/challenge/:id", verifyToken, getChallengeById);
 router.patch("/updateChallenge/:id", verifyToken, updateChallenge);
 router.delete("/deleteChallenge/:id", verifyToken, deleteChallenge);
@@ -59,8 +59,8 @@ router.delete("/deleteSubAdmin/:id", verifyToken, deleteSubAdmin);
 // employee route
 router.get("/employee", getAllEmployees);
 router.get("/employee/:id", getEmployeeById);
-router.post("/createEmployee", verifyToken, createEmployee);
-router.delete("/deleteEmployee/:id", verifyToken, deleteEmployee);
-router.patch("/updateEmployee/:id", verifyToken, updateEmployee);
+router.post("/createEmployee", createEmployee);
+router.delete("/deleteEmployee/:id", deleteEmployee);
+router.patch("/updateEmployee/:id",  updateEmployee);
 
 module.exports = router;
