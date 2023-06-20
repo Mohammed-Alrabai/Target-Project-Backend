@@ -446,7 +446,7 @@ const Employee = require("../Models/employee.js");
 exports.getAllEmployees = async (req, res) => {
   try {
     // get all employees
-    const employeeData = await Employee.find().populate('Department');
+    const employeeData = await Employee.find().populate(['Department']);
     // send response json
     res.status(200).json({
       result: employeeData,
@@ -462,11 +462,12 @@ exports.getAllEmployees = async (req, res) => {
 exports.getEmployeeById = async (req, res) => {
   try {
     // get employee by id
-    const employeeData = await Employee.findById(req.params.id);
+    const test = req.params.id
+    const employeeData = await Employee.findById(req.params.id).populate('Department');
     // send response json
     res.status(200).json({
-      result: employeeData,
-    });
+      result: [employeeData],
+  });
     // handle error
   } catch (error) {
     res.status(500).json({
@@ -482,10 +483,10 @@ exports.createEmployee = async (req, res) => {
       name: req.body.name,
       username: req.body.username,
       password: req.body.password,
-      Department: req.body.department,
+      Department: req.body.mydepartment,
       userRole: req.body.userRole,
     });
-Department.findById(req.body.department).then((foundedDep)=>{
+Department.findById(req.body.mydepartment).then((foundedDep)=>{
   foundedDep.depEmployee.push(employeeData._id)
   foundedDep.save().then((result)=>{
     res.status(200).json({
@@ -525,27 +526,29 @@ exports.deleteEmployee = async (req, res) => {
 }
 // update employee
 exports.updateEmployee = async (req, res) => {
-  try {
-    // get employee by id
-    const employeeData = await Employee.findByIdAndUpdate(
-      req.params.id,
-      req.body
-    );
-    // handle error
-    if (!employeeData) {
-      return res.status(404).json({
-        massage: "Employee not found",
-      });
-    }
-    // send response json
-    res.status(200).json({
-      result: employeeData,
+const id = req.params.id
+const name1 = req.body.name
+const username1 = req.body.username
+const mydepartment = req.body.mydepartment
+const userRole1 = req.body.userRole1
+      
+Employee.findById(id).then((foundedEmp)=>{
+foundedEmp.name = name1
+foundedEmp.username = username1
+foundedEmp.userRole = userRole1
+foundedEmp.Department = mydepartment
+foundedEmp.save().then((updatedEmp)=>{
+  res.status(200).json({
+      result: updatedEmp,
     });
-    // handle error
-  } catch (error) {
+}).catch((error) => {
     res.status(500).json({
       message: error,
 })
+})
+}).catch((error) => {
+    res.status(500).json({
+      message: error,
+})
+})
 }
-}
-
