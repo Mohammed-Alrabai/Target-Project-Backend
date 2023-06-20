@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const employeeSchema = new mongoose.Schema(
   {
@@ -11,26 +11,27 @@ const employeeSchema = new mongoose.Schema(
       type: String,
       select: false,
     },
-    
+
     email: String,
-    userRole:String,
+    userRole: String,
     // Relationship Here
-     comments:[{
-      
+    comments: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Comment",
+      },
+    ],
+
+    Department: {
       type: mongoose.Schema.Types.ObjectId,
-       ref:"Comment"
-    }],
-    
-    Department:{
-       type: mongoose.Schema.Types.ObjectId,
-       ref:"Department"
-    }
+      ref: "Department",
+    },
   },
   {
     timestamps: true,
   }
 );
 
-const employee = mongoose.model("Employee",employeeSchema)
+const employee = mongoose.model("Employee", employeeSchema);
 
 module.exports = employee;

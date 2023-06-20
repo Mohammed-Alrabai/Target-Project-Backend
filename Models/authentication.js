@@ -16,8 +16,8 @@ exports.signToken = async (req, res, next) => {
       token,
     });
   } catch (error) {
-    res.status(404).json({
-      message: "Username or password is incorrect",
+    res.status(500).json({
+      message: "Unauthorized",
     });
   }
 };
@@ -30,7 +30,6 @@ exports.verifyToken = async (req, res, next) => {
     const token = req.headers.authorization.split(" ")[1];
     const decoded = await jwt.verify(token, process.env.JWT_SECRET);
     res.locals.decoded = decoded;
-    
     next();
   } catch (err) {
     res.status(401).json({ massage: "Please Login" });
