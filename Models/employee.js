@@ -21,11 +21,11 @@ const employeeSchema = new mongoose.Schema(
         ref: "Comment",
       },
     ],
-
-    Department: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Department",
-    },
+    
+    Department:[{
+       type: mongoose.Schema.Types.ObjectId,
+       ref:"Department"
+    }]
   },
   {
     timestamps: true,
