@@ -100,20 +100,20 @@ exports.getAdmin = async (req, res) => {
 // goals function
 // create goal
 exports.createGoal = async (req, res) => {
-  const decoded = res.locals.decoded;
-  const adminId = decoded.result._id;
+  // const decoded = res.locals.decoded;
+  // const adminId = decoded.result._id;
   try {
     // create goal
     const goalData = await Goal.create({
       title: req.body.title,
       body: req.body.body,
       type: req.body.type,
-      AdminAuthor: adminId,
+      // AdminAuthor: adminId,
     });
     // add goal to admin
-    const admin = await Admin.findById(adminId).populate("Goals");
-    admin.Goals.push(goalData._id);
-    await admin.save();
+    // const admin = await Admin.findById(adminId).populate("Goals");
+    // admin.Goals.push(goalData._id);
+    // await admin.save();
     // send response json
     res.status(200).json({
       result: goalData,

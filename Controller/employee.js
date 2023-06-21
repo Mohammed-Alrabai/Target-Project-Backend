@@ -33,10 +33,8 @@ const saltRounds = Number(process.env.saltRounds);
 exports.EmployeeLogin = (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
- 
-  
   Employee.findOne({ username: username })
-    .select("+password")
+  .select("+password")
     .then(async (result) => {
        const hashedPass = result.password;
       const compare = await bcrypt.compare(password, hashedPass);
@@ -44,12 +42,13 @@ exports.EmployeeLogin = (req, res) => {
         const token = jwt.sign({ result }, process.env.JWT_SECRET, {
           expiresIn: "1h",
         });
-        console.log(token)
-        res.status(200).json({ token: token });
+        res.status(200).json({ token: token  , result });
       }
     })
     .catch((error) => {
-      res.json(error);
+      res.status(404).json({
+        message: error,
+      })
     });
 };
 

@@ -38,7 +38,7 @@ router.post("/login", loginAdmin, signToken);
 router.get("/admin", verifyToken, getAdmin);
 
 // Goals route
-router.post("/createGoal", verifyToken, isAuth, createGoal);
+router.post("/createGoal", verifyToken, createGoal);
 router.get("/goals", verifyToken, getAllGoals);
 router.get("/goal/:id", verifyToken, getGoalById);
 router.patch("/updateGoal/:id", verifyToken, updateGoal);
