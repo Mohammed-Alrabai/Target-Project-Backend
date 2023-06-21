@@ -28,6 +28,7 @@ const {
   createEmployee,
   deleteEmployee,
   updateEmployee,
+CreateEmployee1
 } = require("../Controller/admin");
 const { signToken, verifyToken } = require("../Middleware/authentication");
 const isAuth = require("../Middleware/authorization");
@@ -59,7 +60,7 @@ router.delete("/deleteSubAdmin/:id", verifyToken, deleteSubAdmin);
 // employee route
 router.get("/employee", getAllEmployees);
 router.get("/employee/:id", getEmployeeById);
-router.post("/createEmployee", createEmployee);
+router.post("/createEmployee", CreateEmployee1);
 router.delete("/deleteEmployee/:id", deleteEmployee);
 router.patch("/updateEmployee/:id", updateEmployee);
 
