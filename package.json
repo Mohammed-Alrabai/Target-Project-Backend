@@ -1,7 +1,6 @@
 {
   "name": "target-project-backend",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -24,5 +23,7 @@
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^7.3.0"
-  }
+  },
+  "devDependencies": {},
+  "description": ""
 }

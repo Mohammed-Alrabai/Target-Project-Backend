@@ -33,6 +33,10 @@ const saltRounds = Number(process.env.saltRounds);
 exports.EmployeeLogin = (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
+<<<<<<< HEAD
+=======
+ 
+>>>>>>> 9e07b3bb3d22289794ecbab033d163c4c3e5f0dd
   Employee.findOne({ username: username })
   .select("+password")
     .then(async (result) => {
@@ -42,7 +46,12 @@ exports.EmployeeLogin = (req, res) => {
         const token = jwt.sign({ result }, process.env.JWT_SECRET, {
           expiresIn: "1h",
         });
+<<<<<<< HEAD
         res.status(200).json({ token: token  , result });
+=======
+        console.log(token)
+        res.status(200).json({ token: token,result: result });
+>>>>>>> 9e07b3bb3d22289794ecbab033d163c4c3e5f0dd
       }
     })
     .catch((error) => {
@@ -83,6 +92,18 @@ exports.ChallengeById = (req, res) => {
     });
 };
 
+////comment 
+exports.CommentChallengeById = async(req, res) => {
+  const ChallengId = req.params.id;
+ const reponse = await Challenge.findById(ChallengId).populate("comments")
+   
+     res.status(200).json({
+       reponse
+      });
+  
+};
+
+
 // get challenge by id
 exports.Comment = (req, res) => {
   const ChallengId = req.params.id;
@@ -92,7 +113,7 @@ exports.Comment = (req, res) => {
 
   const newComment = new Comment({
     body: inputbody,
-    EmployeeAuther: ChallengId,
+    EmployeeAuther: empId,
   });
 
   newComment
@@ -136,3 +157,75 @@ exports.Comment = (req, res) => {
       });
     });
 };
+
+
+exports.Comment1 = (req, res) => {
+  const ChallengId = req.params.id;
+  const inputbody = req.body.inputbody;
+  
+  const newComment = new Comment({
+    body: inputbody,
+   
+  });
+
+  newComment
+    .save()
+    .then((newCommentResult) => {
+      ///adding comment to the employee model (relationship)
+  
+         Challenge.findById(ChallengId)
+        .then((foundedChallange) => {
+          foundedChallange.comments.push(newCommentResult._id)
+          foundedChallange.save().then((savedComment1) => {
+           console.log(savedComment1)
+          });
+        })
+        .catch((error) => {
+            res.status(500).json({
+            message: error,
+          });
+        });
+
+      res.status(200).json({
+        newCommentResult,
+      });
+    })
+    .catch((error) => {
+      res.status(500).json({
+        message: error,
+      });
+    });
+};
+
+exports.CreateComment = (req,res)=>{
+  const cbody = req.body.bodyc
+  const ChallengId = req.params.id;
+  const emp = res.locals.decoded;
+  const empId = emp.result._id;
+  
+  const NewComment = new Comment({
+    bodyc:cbody,
+    ChallangeId:ChallengId,
+    EmployeeAuther:empId
+  })
+
+NewComment.save().then((comment)=>{
+  Employee.findById(empId).then((emp1)=>{
+   emp1.comments.push(comment._id)
+  })
+
+  Challenge.findById(ChallengId).then((challange1)=>{
+   challange1.comments.push(comment._id)
+    console.log(comment._id)
+   console.log("the challange")
+     console.log(challange1)
+  })
+   res.status(200).json({
+        comment,
+      });
+}).catch((error)=>{
+  res.status(401).json({
+        error,
+      });
+})
+}
