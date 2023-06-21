@@ -553,3 +553,23 @@ foundedEmp.save().then((updatedEmp)=>{
 })
 }
 
+exports.CreateEmployee = async (req, res) => {
+  const username = req.body.username;
+  const password = req.body.password;
+  const passHash = await bcrypt.hash(password, saltRounds);
+
+  const newEmployee = new Employee({
+    username: username,
+    password: passHash,
+  });
+  newEmployee
+    .save()
+    .then((newEmp) => {
+      res.status(200).json({
+        result: newEmp,
+      });
+    })
+    .catch((err) => {
+      res.json(err);
+    });
+};
