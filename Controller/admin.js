@@ -557,17 +557,28 @@ exports.CreateEmployee1 = async (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
   const passHash = await bcrypt.hash(password, saltRounds);
-
+  const name = req.body.name
+  const mydepartment = req.body.mydepartment
+  const userRole1 = req.body.userRole1
+    
   const newEmployee = new Employee({
     username: username,
+    name:name,
     password: passHash,
+    Department:mydepartment,
+    userRole:userRole1
   });
   newEmployee
     .save()
     .then((newEmp) => {
-      res.status(200).json({
-        result: newEmp,
-      });
+    Department.findById(req.body.mydepartment).then((foundedDep)=>{
+  foundedDep.depEmployee.push(newEmp._id)
+  foundedDep.save().then((result)=>{
+    res.status(200).json({
+      result: newEmp,
+    });
+  })
+})
     })
     .catch((err) => {
       res.json(err);
