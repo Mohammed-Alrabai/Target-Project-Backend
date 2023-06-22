@@ -87,7 +87,11 @@ exports.ChallengeById = (req, res) => {
 ////comment 
 exports.CommentChallengeById = async(req, res) => {
  const ChallengId = req.params.id;
- const reponse = await Challenge.findById(ChallengId).populate('comments')
+ const reponse = await Challenge.findById(ChallengId).populate({path:'comments',
+populate:{
+  path:'EmployeeAuther',
+  model:'employee'
+}})
      res.status(200).json({
        reponse
       });
