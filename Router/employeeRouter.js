@@ -10,6 +10,7 @@ router.post("/CreateEmp",employeeController.CreateEmployee)
 router.post("/emplogin", employeeController.EmployeeLogin);
 router.post("/Comment/:id",verifyToken, employeeController.Comment)
 router.post("/CreateComment/:id",verifyToken,employeeController.CreateComment)
+//router.get("/getEmpByID/:authId",employeeController.getEmpByID)
 
 
 module.exports = router;
