@@ -33,10 +33,6 @@ const saltRounds = Number(process.env.saltRounds);
 exports.EmployeeLogin = (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
-<<<<<<< HEAD
-=======
- 
->>>>>>> 9e07b3bb3d22289794ecbab033d163c4c3e5f0dd
   Employee.findOne({ username: username })
   .select("+password")
     .then(async (result) => {
@@ -46,12 +42,8 @@ exports.EmployeeLogin = (req, res) => {
         const token = jwt.sign({ result }, process.env.JWT_SECRET, {
           expiresIn: "1h",
         });
-<<<<<<< HEAD
-        res.status(200).json({ token: token  , result });
-=======
         console.log(token)
         res.status(200).json({ token: token,result: result });
->>>>>>> 9e07b3bb3d22289794ecbab033d163c4c3e5f0dd
       }
     })
     .catch((error) => {
