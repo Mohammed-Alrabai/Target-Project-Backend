@@ -1,32 +1,32 @@
 const mongoose = require("mongoose");
 
-const commentSchema = new mongoose.Schema({
-    
-    body: {
-        type: String,
-        required: true,
+const commentSchema = new mongoose.Schema(
+  {
+    bodyc: {
+      type: String,
+      required: true,
     },
     date: {
-        type: Date,
-        default: Date.now,
+      type: Date,
+      default: Date.now,
     },
     agreeCounter: {
-        type: Number,
+      type: Number,
     },
-    // Relationship Here 
-    EmployeeAuther:{
-       type: mongoose.Schema.Types.ObjectId,
-       ref:"Employee"
+    // Relationship Here
+    EmployeeAuther: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Employee",
     },
-       ChallangeId:{
-       type: mongoose.Schema.Types.ObjectId,
-       ref:"Challenge"
-    }
-
-},
-{
+    ChallangeId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Challenge",
+    },
+  },
+  {
     timestamps: true,
-})
+  }
+);
 
 const Comment = mongoose.model("Comment", commentSchema);
 
