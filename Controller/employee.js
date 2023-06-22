@@ -24,8 +24,8 @@ const saltRounds = Number(process.env.saltRounds);
         result: newEmp,
       });
     })
-    .catch((err) => {
-      res.json(err);
+    .catch((error) => {
+      res.json(error);
     });
 };
 
@@ -61,9 +61,9 @@ exports.ChallangeList = (req, res) => {
         result: challangeList,
       });
     })
-    .catch((err) => {
+    .catch((error) => {
       res.status(500).json({
-        message: err,
+        message: error,
       });
     });
 };
@@ -86,14 +86,13 @@ exports.ChallengeById = (req, res) => {
 
 ////comment 
 exports.CommentChallengeById = async(req, res) => {
-  const ChallengId = req.params.id;
- const reponse = await Challenge.findById(ChallengId).populate("comments")
-   
+ const ChallengId = req.params.id;
+ const reponse = await Challenge.findById(ChallengId).populate('comments')
      res.status(200).json({
        reponse
       });
-  
 };
+
 
 
 // get challenge by id
@@ -204,16 +203,20 @@ exports.CreateComment = (req,res)=>{
 NewComment.save().then((comment)=>{
   Employee.findById(empId).then((emp1)=>{
    emp1.comments.push(comment._id)
+   emp1.save().then((res)=>{
+    console.log("res")
+   })
   })
 
   Challenge.findById(ChallengId).then((challange1)=>{
    challange1.comments.push(comment._id)
-    console.log(comment._id)
-   console.log("the challange")
-     console.log(challange1)
+   challange1.save().then((res)=>{
+     console.log("res")
+   })
+  
   })
    res.status(200).json({
-        comment,
+        comment
       });
 }).catch((error)=>{
   res.status(401).json({
@@ -221,3 +224,5 @@ NewComment.save().then((comment)=>{
       });
 })
 }
+
+
